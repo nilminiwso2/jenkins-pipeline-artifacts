@@ -31,7 +31,7 @@ node(NODE_MASTER) {
     def AWS_CREDS = 'aws_creds'
     def BASE_IMAGE = "ami-0b2cdd7df5bf0386c"
     //Test Endpoint
-    def TEST_ENDPOINT = "ESBHttpUrl"
+    def TEST_ENDPOINT_KEY = "ESBHttpUrl"
     //Directories
     def DEPLOYMENT_DIR = "deployment"
     def CONF_HOME_DIR = "configs"
@@ -93,7 +93,7 @@ node(NODE_MASTER) {
 
         stage(Constants.Stages.DEPLOY_STAGING) {
             log.info "Deploying to Staging"
-            deployAWS([wso2InstanceType: "${env.WSO2InstanceType}",
+            env.TEST_ENDPOINT = deployAWS([wso2InstanceType: "${env.WSO2InstanceType}",
                        keyPairName     : "${env.KeyPairName}",
                        certName        : "${env.CertificateName}",
                        dbUsername      : "${env.DBUsername}",
@@ -104,7 +104,7 @@ node(NODE_MASTER) {
                        region          : "${env.REGION}",
                        environment     : "${STACK_STAGING}",
                        cf              : "${STAGING_CF}",
-                       testEndpoint    : "${TEST_ENDPOINT}",
+                       testEndpoint    : "${TEST_ENDPOINT_KEY}",
                        awsCredsFile    : "${AWS_CREDS_LOC}"])
         }
 
@@ -119,7 +119,7 @@ node(NODE_MASTER) {
 
         stage(Constants.Stages.DEPLOY_PRODUCTION) {
             log.info "Deploying to Production"
-            deployAWS([wso2InstanceType: "${env.WSO2InstanceType}",
+            env.TEST_ENDPOINT = deployAWS([wso2InstanceType: "${env.WSO2InstanceType}",
                        keyPairName     : "${env.KeyPairName}",
                        certName        : "${env.CertificateName}",
                        dbUsername      : "${env.DBUsername}",
@@ -130,7 +130,7 @@ node(NODE_MASTER) {
                        region          : "${env.REGION}",
                        environment     : "${STACK_PROD}",
                        cf              : "${PROD_CF}",
-                       testEndpoint    : "${TEST_ENDPOINT}",
+                       testEndpoint    : "${TEST_ENDPOINT_KEY}",
                        awsCredsFile    : "${AWS_CREDS_LOC}"])
         }
 
